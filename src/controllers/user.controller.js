@@ -361,7 +361,7 @@ const updateUserCoverImage = asyncHandler (async (req, res) => {
 
 });
 
-const getUserchannelProfile = asyncHandler (async (req, res)  => {
+const getUserChannelProfile = asyncHandler (async (req, res)  => {
   const {username} = req.params;
 
   if (!username?.trim()) {
@@ -433,6 +433,62 @@ const getUserchannelProfile = asyncHandler (async (req, res)  => {
  
 })
 
+const getWatchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectdId(req.user?._id)
+      }
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foregnField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $projct: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner"
+              }
+            }
+          }
+        ]
+      }
+    }
+
+  ])
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      user[0].watchHistory,
+      "Watch history fetched successfully"
+    )
+  )
+
+})
+
 export { 
         registerUser, 
         loginUser, 
@@ -443,5 +499,6 @@ export {
         updateAccountDetails,
         updateUserAvatar,
         updateUserCoverImage,
-        getUserchannelProfile
+        getUserChannelProfile,
+        getWatchHistroy
     };
