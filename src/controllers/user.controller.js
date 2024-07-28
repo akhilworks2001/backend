@@ -165,8 +165,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1 // this removes the field from document
       },
     },
     {
@@ -553,6 +553,7 @@ export {
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -562,6 +563,9 @@ export {
 
 
       // const updateUserAvatar = asyncHandler (async (req, res) => {
+=======
+// const updateUserAvatar = asyncHandler (async (req, res) => {
+>>>>>>> origin/main
       //     //  TODO: delete old image
       
       //     // const user = await User.findById(req.user?._id);
@@ -596,4 +600,8 @@ export {
       //         new ApiResponse(200, user, "avatar updated successfully")
       //     )
       
+<<<<<<< HEAD
       // });
+=======
+      // });
+>>>>>>> origin/main
