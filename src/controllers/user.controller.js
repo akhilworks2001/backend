@@ -1,9 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {ApiError} from "../utils/ApiError.js"
+import { User} from "../models/user.model.js"
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -490,7 +491,7 @@ const getWatchHistory = asyncHandler(async(req, res) => {
               ]
           }
       }
-  ])
+  ]);
 
   return res
   .status(200)
@@ -500,8 +501,9 @@ const getWatchHistory = asyncHandler(async(req, res) => {
           user[0].watchHistory,
           "Watch history fetched successfully"
       )
-  )
-})
+  );
+});
+
 
 export { 
         registerUser, 
@@ -553,7 +555,6 @@ export {
 
 
 
-<<<<<<< HEAD
 
 
 
@@ -563,9 +564,7 @@ export {
 
 
       // const updateUserAvatar = asyncHandler (async (req, res) => {
-=======
 // const updateUserAvatar = asyncHandler (async (req, res) => {
->>>>>>> origin/main
       //     //  TODO: delete old image
       
       //     // const user = await User.findById(req.user?._id);
@@ -600,8 +599,4 @@ export {
       //         new ApiResponse(200, user, "avatar updated successfully")
       //     )
       
-<<<<<<< HEAD
       // });
-=======
-      // });
->>>>>>> origin/main
