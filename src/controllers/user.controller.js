@@ -560,11 +560,11 @@ export {
 
 
 
-
-
-
       // const updateUserAvatar = asyncHandler (async (req, res) => {
 // const updateUserAvatar = asyncHandler (async (req, res) => {
+
+// const updateUserAvatar = asyncHandler (async (req, res) => {
+
       //     //  TODO: delete old image
       
       //     // const user = await User.findById(req.user?._id);
@@ -599,4 +599,5 @@ export {
       //         new ApiResponse(200, user, "avatar updated successfully")
       //     )
       
+
       // });
