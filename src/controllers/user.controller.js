@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js"
 import { User} from "../models/user.model.js"
-import {uploadOnCloudinary} from "../utils/cloudinary.js"
+import {deleteOnCloudinary, uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
@@ -139,6 +139,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
+
 
   const options = {
     httpOnly: true,
@@ -295,9 +296,6 @@ const updateAccountDetails = asyncHandler (async (req, res) => {
 });
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
-  // Import Cloudinary uploader
-  const cloudinary = require('cloudinary').v2;
-
   const user = await User.findById(req.user?._id);
 
   // Get the old image URL and extract the public ID from it
@@ -318,15 +316,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   }
 
   // Delete old image from Cloudinary if it exists
-  if (publicId) {
-      await cloudinary.uploader.destroy(publicId, function(error, result) {
-          if (error) {
-              console.error("Error deleting old image from Cloudinary:", error);
-          } else {
-              console.log("Old image deleted from Cloudinary:", result);
-          }
-      });
-  }
+  await deleteOnCloudinary(publicId)
 
   // Update user avatar URL in the database
   const updatedUser = await User.findByIdAndUpdate(
@@ -559,9 +549,6 @@ export {
 
 
 
-
-      // const updateUserAvatar = asyncHandler (async (req, res) => {
-// const updateUserAvatar = asyncHandler (async (req, res) => {
 
 // const updateUserAvatar = asyncHandler (async (req, res) => {
 

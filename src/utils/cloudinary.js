@@ -25,4 +25,20 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
-export { uploadOnCloudinary }
+const deleteOnCloudinary = async (publicId) => {
+    try {
+        if (publicId) {
+            await cloudinary.uploader.destroy(publicId, function(error, result) {
+                if (error) {
+                    console.log("Error deleting old video on cloudinary:", error)
+                } else {
+                    console.log("Old image deleted from cloudinary:", result)
+                }
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { uploadOnCloudinary, deleteOnCloudinary }
