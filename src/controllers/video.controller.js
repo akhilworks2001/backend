@@ -4,7 +4,6 @@ import { Video } from "../models/video.model";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
-import { deleteComment } from "./comment.controller.js";
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -160,7 +159,7 @@ const updateVideo = asyncHandler(async (req, res) => {
 
             updateData.thumbnail = newThumbnailUrl;
         }
-        
+
         const updatedVideo = await Video.findByIdAndUpdate(
             videoId, 
             { $set: updateData },
