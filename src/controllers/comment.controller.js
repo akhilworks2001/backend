@@ -76,7 +76,7 @@ const updateComment = asyncHandler(async (req, res) => {
 
         return res
         .status(201)
-        .json(new ApiResponse(201, updatedComment, "Commented updated successfully"))
+        .json(new ApiResponse(201, updatedComment, "Comment updated successfully"))
         
 
     } catch (error) {

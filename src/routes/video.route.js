@@ -3,18 +3,20 @@ import { deleteVideo, getAllVideos, getVideoById, togglePublicStatus, updateVide
 import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
+router.use(verifyJWT)
 
-router.route("/video")
-    .get(getAllVideos);
-
-router.route("/publish")
+router
+    .route("/")
+    .get(getAllVideos)
     .post(upload.fields([{ name: 'videoFile', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]), publishAVideo);
-router.route("/video/:videoId")
-    .get( verifyJWT, getVideoById)
-    .put( verifyJWT, upload.fields([{ name: 'thumbnail', maxCount: 1 }]), updateVideo)
-    .delete( verifyJWT, deleteVideo)
 
-router.route("/video/:videoId/toggle-publish")
-    .patch( verifyJWT, togglePublicStatus)
+router
+    .route("/:videoId")
+    .get(getVideoById)
+    .put(upload.fields([{ name: 'thumbnail', maxCount: 1 }]), updateVideo)
+    .delete(deleteVideo)
+
+router.route("/toggle/publish/:videoId")
+    .patch(togglePublicStatus)
 
 export default router;
