@@ -37,6 +37,11 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 })
 
+const getUserPlaylists = asyncHandler(async (req, res) => {
+    const {userId} = req.params
+    //TODO: get user playlists
+})
+
 
 export {
     createPlaylist,
