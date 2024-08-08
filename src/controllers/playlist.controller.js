@@ -38,12 +38,83 @@ const createPlaylist = asyncHandler(async (req, res) => {
 })
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
-    const {userId} = req.params
-    //TODO: get user playlists
+    try {
+        const {userId} = req.user?._id
+    
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res
+            .status(400)
+            .json(new ApiError(400, "Invalid user ID"));
+    }
+
+    const getUserPlaylist = await Playlist.aggregate([
+        {$match: {owner: mongoose.Types.ObjectId(userId)}},
+        {$sort: { createdAt: -1 } }
+    ])
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, getUserPlaylist , "User's playlists fetched successfully"));
+
+    } catch (error) {
+        return res
+            .status(500)
+            .json(new ApiError(500, "Something went wrong while fetching user playlists"));
+    }
+
+})
+
+const getPlaylistById = asyncHandler(async (req, res) => {
+    try {
+        const {playlistId} = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(playlistId)) {
+            return res
+                .status(400)
+                .json(new ApiError(400, "Invalid playlist ID"));
+        };
+
+        const playlist = await Playlist.findById(playlistId);
+
+        if (!playlist) {
+            return res
+                .status(404)
+                .json(new ApiError(404, "Playlist not found"));
+        };
+
+        return res
+        .status(200)
+        .json(new ApiResponse(200,playlist , "User's playlist fetched successfully"));
+
+    } catch (error) {
+        return res
+            .status(500)
+            .json(new ApiError(500, "Something went wrong while fetching user playlist"));
+    }
+    
+})
+
+const addVideoToPlaylist = asyncHandler(async (req, res) => {
+    try {
+        const {playlistId, videoId} = req.params
+
+        if (!mongoose.Types.ObjectId.isValid(playlistId)) {
+            return res
+                .status(400)
+                .json(new ApiError(400, "Invalid playlist ID"));
+        };
+
+        
+
+    } catch (error) {
+        
+    }
 })
 
 
 export {
     createPlaylist,
+    getUserPlaylists,
+    getPlaylistById,
     
 }
